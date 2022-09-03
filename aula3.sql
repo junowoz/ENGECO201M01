@@ -1,0 +1,146 @@
+-- Programe o código SQL necessário para gerar a estrutura do banco de dados criado
+
+-- Observação: Não é necessário criar o código que popula as tabelas, pois este é o 
+-- tema do próximo módulo.
+
+--
+-- Cria o banco de dados e acessa o mesmo
+--
+CREATE DATABASE CA DEFAULT CHARSET=latin1;
+USE CA;
+
+--
+-- Cria a tabela TIPO
+--
+CREATE TABLE TIPO (
+	CODIGO INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,	
+	TIPO VARCHAR(32) NOT NULL,				
+	PRIMARY KEY(CODIGO)					
+);
+
+insert into TIPO (CODIGO, TIPO) 
+values (1, 'Banco de Dados');
+select *
+from TIPO;
+
+insert into TIPO (CODIGO, TIPO) 
+values (2, 'Programação');
+select *
+from TIPO;
+
+insert into TIPO (CODIGO, TIPO) 
+values (3, 'Modelagem de Dados');
+select *
+from TIPO;
+
+--
+-- Cria a tabela INSTRUTOR
+--
+CREATE TABLE INSTRUTOR (
+	CODIGO INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,	
+	INSTRUTOR VARCHAR(64) NOT NULL,				
+	TELEFONE VARCHAR(9) NULL,				
+	PRIMARY KEY(CODIGO)		
+);			
+
+insert into INSTRUTOR (CODIGO, INSTRUTOR, TELEFONE) 
+values (1, 'FERNANDO', '929483950');
+select * from INSTRUTOR;
+
+insert into INSTRUTOR (CODIGO, INSTRUTOR, TELEFONE) 
+values (2, 'CARLOS', '969582951');
+select *
+from INSTRUTOR;
+
+--
+-- Cria a tabela CURSO
+--
+CREATE TABLE CURSO (
+	CODIGO INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,	
+	CURSO VARCHAR(64) NOT NULL,				
+	TIPO INTEGER UNSIGNED NOT NULL,				
+	INSTRUTOR INTEGER UNSIGNED NOT NULL,			
+	VALOR DOUBLE NOT NULL,					
+	PRIMARY KEY(CODIGO),					
+	INDEX FK_TIPO(TIPO),				
+	INDEX FK_INSTRUTOR(INSTRUTOR),			
+	FOREIGN KEY(TIPO) REFERENCES TIPO(CODIGO),		
+	FOREIGN KEY(INSTRUTOR) REFERENCES INSTRUTOR(CODIGO)	
+);								
+
+insert into CURSO (CODIGO, CURSO, TIPO, INSTRUTOR, VALOR) 
+values (1, 'Java', 2, 1, 100.0);
+select *
+from CURSO;
+
+insert into CURSO (CODIGO, CURSO, TIPO, INSTRUTOR, VALOR) 
+values (2, 'MYSQL', 1, 2, 90.0);
+select *
+from CURSO;
+
+--
+-- Cria a tabela ALUNO
+--
+CREATE TABLE ALUNO(
+	CODIGO INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,	
+	ALUNO VARCHAR(64) NOT NULL,			
+	ENDERECO VARCHAR(230) NOT NULL,				
+	EMAIL VARCHAR(128) NOT NULL,				
+	PRIMARY KEY(CODIGO)					
+);
+
+insert into ALUNO (CODIGO, ALUNO, ENDERECO, EMAIL) 
+values (1, 'JUAN', 'Rua 3432', 'juan@gmail.com');
+select *
+from ALUNO;
+
+insert into ALUNO (CODIGO, ALUNO, ENDERECO, EMAIL) 
+values (2, 'ANNE', 'Rua 4666', 'anne@gmail.com');
+select *
+from ALUNO;
+--
+-- Cria a tabela PEDIDO
+--
+CREATE TABLE PEDIDO (
+	CODIGO INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,	
+	ALUNO INTEGER UNSIGNED NOT NULL,			
+	DATAHORA DATETIME NOT NULL,				
+	PRIMARY KEY(CODIGO),					
+	INDEX FK_ALUNO(ALUNO),					
+	FOREIGN KEY(ALUNO) REFERENCES ALUNO(CODIGO)		
+);
+
+insert into PEDIDO (CODIGO, ALUNO, DATAHORA) 
+values (1, 1, '2022-09-02 10:13:53');
+select *
+from PEDIDO;
+
+insert into PEDIDO (CODIGO, ALUNO, DATAHORA) 
+values (2, 2, '2022-09-03 11:43:37');
+select *
+from PEDIDO;
+
+--
+-- Cria a tabela PEDIDO_DETALHE
+--
+CREATE TABLE PEDIDO_DETALHE (
+	PEDIDO INTEGER UNSIGNED NOT NULL,			
+	CURSO INTEGER UNSIGNED NOT NULL,			
+	VALOR DOUBLE NOT NULL,			
+	INDEX FK_PEDIDO(PEDIDO),				
+	INDEX FK_CURSO(CURSO),					
+	PRIMARY KEY(PEDIDO, CURSO),				
+	FOREIGN KEY(PEDIDO) REFERENCES PEDIDO(CODIGO),		
+	FOREIGN KEY(CURSO) REFERENCES CURSO(CODIGO)		
+);
+
+insert into PEDIDO_DETALHE (PEDIDO, CURSO, VALOR) 
+values (1, 1, 100);
+select *
+from PEDIDO_DETALHE;
+
+insert into PEDIDO_DETALHE (PEDIDO, CURSO, VALOR) 
+values (2, 2, 90);
+select *
+from PEDIDO_DETALHE;
+-------------
