@@ -1,6 +1,6 @@
-package Aula_2.teste;
+package ex02.teste;
 
-import Aula_2.classes.Metodos;
+import ex02.classes.Metodos;
 
 public class Programa {
     public static void main(String[] args) {

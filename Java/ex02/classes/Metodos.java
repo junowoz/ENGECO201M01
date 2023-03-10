@@ -1,4 +1,4 @@
-package Aula_2.classes;
+package ex02.classes;
 
 public class Metodos {
   private double valor;
